@@ -120,5 +120,39 @@ Your code has been rated at 10.00/10
 
 That's about it! When working with kubernetes, you may need to install some other libraries, but these instructions will set you up with an environment that can build and deploy Docker containers.
 
-# Template:
+# Project ML-Microservice Kubernetes
+
+## CircleCI Workflow Status:
 [![CircleCI](https://circleci.com/gh/richbm10/DevOps_Microservices/tree/master.svg?style=svg)](https://circleci.com/gh/richbm10/DevOps_Microservices/tree/master)
+
+## Summary
+This project is based on the operationalization of a python machine learning program by creating a container and deploying it to a kubernetes cluster.
+
+All the setup of the environment was made by taking leverage of a Makefile. This helped to declare the respective commands to create
+a virtual environment, install dependencies, and lint the program code as well as the Dockerfile to make sure it follows the required
+conventions.
+
+This repository includes multiple programs source code but for the project of this section the source code is on the folder: project-ml-microservice-kubernetes.
+
+The source code includes 4 important scripts:
+- [run_docker.sh](https://github.com/richbm10/DevOps_Microservices/blob/master/project-ml-microservice-kubernetes/run_docker.sh)
+- [make_prediction.sh](https://github.com/richbm10/DevOps_Microservices/blob/master/project-ml-microservice-kubernetes/make_prediction.sh)
+- [upload_docker.sh](https://github.com/richbm10/DevOps_Microservices/blob/master/project-ml-microservice-kubernetes/upload_docker.sh)
+- [run_kubernetes.sh](https://github.com/richbm10/DevOps_Microservices/blob/master/project-ml-microservice-kubernetes/run_kubernetes.sh)
+
+## run_docker.sh
+This script is in charge of building the program container image, list it locally and then run it to be ready to receive requests on port 3000.
+
+## make_prediction.sh
+The purpose of this script is to test that the container is running properly by making a prediction request to localhost port 3000. If a response
+payload with the prediction is received, then it means the container is running.
+
+## upload_docker.sh
+To host the container it needs to be uploaded to a container registry. In this case, a free repository was created in DockerHub, so the
+container image is uploaded to richbm10/my-private-repo. Notice that for this repository a password is required, so in case
+that anyone needs to upload the container it would require a different repository and change the name on the scripts.
+
+## run_kubernetes.sh
+This script has the responsibility to create the required deployment in a kubernetes cluster to run the container on a Pod. After
+the deployment is created, the script list the current pods and their status and then makes a port forward so that the Pod
+can forward requests on port 3000 to the running container.
